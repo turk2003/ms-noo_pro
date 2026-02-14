@@ -184,8 +184,105 @@ export default function ItemManagement() {
         </div>
       )}
 
-      {/* Table */}
-      <div className="overflow-x-auto">
+      {/* Mobile Cards View */}
+      <div className="block md:hidden space-y-3">
+        {items.map((item) => (
+          <div key={item.id} className="bg-white border border-gray-200 rounded-lg p-4">
+            <div className="flex items-start justify-between mb-3">
+              <div className="flex-1">
+                <div className="text-xs text-gray-500 mb-1">ชื่อ อุปกรณ์</div>
+                {editing === item.id ? (
+                  <input
+                    type="text"
+                    value={item.name}
+                    onChange={(e) => updateItem(item.id, 'name', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+                ) : (
+                  <div className="font-medium text-gray-900">{item.name}</div>
+                )}
+              </div>
+              {editing !== item.id && (
+                <div className="flex gap-2 ml-2">
+                  <button
+                    onClick={() => setEditing(item.id)}
+                    className="p-2 text-blue-600 hover:bg-blue-50 rounded"
+                  >
+                    <Edit2 className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(item.id, item.name)}
+                    className="p-2 text-red-600 hover:bg-red-50 rounded"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
+            </div>
+            
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <div className="text-xs text-gray-500 mb-1">หน่วย</div>
+                {editing === item.id ? (
+                  <input
+                    type="text"
+                    value={item.unit}
+                    onChange={(e) => updateItem(item.id, 'unit', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+                ) : (
+                  <div className="text-sm">{item.unit}</div>
+                )}
+              </div>
+              
+              <div>
+                <div className="text-xs text-gray-500 mb-1">จำนวนสต็อก</div>
+                {editing === item.id ? (
+                  <input
+                    type="number"
+                    value={item.stock_quantity}
+                    onChange={(e) => updateItem(item.id, 'stock_quantity', parseInt(e.target.value) || 0)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+                ) : (
+                  <div className="text-sm font-semibold text-purple-600">{item.stock_quantity}</div>
+                )}
+              </div>
+            </div>
+
+            {editing === item.id && (
+              <div className="flex gap-2 mt-3 pt-3 border-t border-gray-200">
+                <button
+                  onClick={() => handleUpdate(item.id)}
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                >
+                  <Save className="w-4 h-4" />
+                  บันทึก
+                </button>
+                <button
+                  onClick={() => {
+                    setEditing(null)
+                    loadItems()
+                  }}
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                >
+                  <X className="w-4 h-4" />
+                  ยกเลิก
+                </button>
+              </div>
+            )}
+          </div>
+        ))}
+        
+        {items.length === 0 && (
+          <div className="text-center py-12 text-gray-500">
+            ยังไม่มีข้อมูลอุปกรณ์
+          </div>
+        )}
+      </div>
+
+      {/* Desktop Table View */}
+      <div className="hidden md:block overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="bg-gray-50 border-b border-gray-200">

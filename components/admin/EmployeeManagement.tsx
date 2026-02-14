@@ -183,8 +183,96 @@ export default function EmployeeManagement() {
         </div>
       )}
 
-      {/* Table */}
-      <div className="overflow-x-auto">
+      {/* Mobile Cards View */}
+      <div className="block md:hidden space-y-3">
+        {employees.map((emp) => (
+          <div key={emp.id} className="bg-white border border-gray-200 rounded-lg p-4">
+            <div className="flex items-start justify-between mb-3">
+              <div className="flex-1">
+                <div className="text-xs text-gray-500 mb-1">รหัสพนักงาน</div>
+                <div className="font-medium text-gray-900">{emp.employee_code}</div>
+              </div>
+              {editing !== emp.id && (
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setEditing(emp.id)}
+                    className="p-2 text-blue-600 hover:bg-blue-50 rounded"
+                  >
+                    <Edit2 className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(emp.id, emp.employee_code)}
+                    className="p-2 text-red-600 hover:bg-red-50 rounded"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
+            </div>
+            
+            <div className="space-y-2">
+              <div>
+                <div className="text-xs text-gray-500 mb-1">ชื่อ-นามสกุล</div>
+                {editing === emp.id ? (
+                  <input
+                    type="text"
+                    value={emp.employee_name}
+                    onChange={(e) => updateEmployee(emp.id, 'employee_name', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+                ) : (
+                  <div className="text-sm">{emp.employee_name}</div>
+                )}
+              </div>
+              
+              <div>
+                <div className="text-xs text-gray-500 mb-1">แผนก</div>
+                {editing === emp.id ? (
+                  <input
+                    type="text"
+                    value={emp.department}
+                    onChange={(e) => updateEmployee(emp.id, 'department', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+                ) : (
+                  <div className="text-sm">{emp.department}</div>
+                )}
+              </div>
+            </div>
+
+            {editing === emp.id && (
+              <div className="flex gap-2 mt-3 pt-3 border-t border-gray-200">
+                <button
+                  onClick={() => handleUpdate(emp.id)}
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                >
+                  <Save className="w-4 h-4" />
+                  บันทึก
+                </button>
+                <button
+                  onClick={() => {
+                    setEditing(null)
+                    loadEmployees()
+                  }}
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                >
+                  <X className="w-4 h-4" />
+                  ยกเลิก
+                </button>
+              </div>
+            )}
+          </div>
+        ))}
+        
+        {employees.length === 0 && (
+          <div className="text-center py-12 text-gray-500">
+            ยังไม่มีข้อมูลพนักงาน
+          </div>
+        )}
+      </div>
+
+      {/* Desktop Table View */}
+      <div className="hidden md:block overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="bg-gray-50 border-b border-gray-200">
