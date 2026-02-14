@@ -13,7 +13,7 @@ export default function Home() {
   const router = useRouter()
 
   const handleSuccess = () => {
-    router.push('/summary')
+    router.push('/')
   }
 
   return (

@@ -49,6 +49,7 @@ export default function EquipmentSummary({ refresh }: Props) {
   const [equipmentStock, setEquipmentStock] = useState<EquipmentStock[]>([])
   const [employeeSummary, setEmployeeSummary] = useState<EmployeeWithdrawalSummary[]>([])
   const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState<'stock' | 'history' | 'employee'>('stock')
 
   useEffect(() => {
     fetchData()
@@ -159,8 +160,48 @@ export default function EquipmentSummary({ refresh }: Props) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
+      {/* Tabs Navigation */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <div className="flex border-b border-gray-200">
+          <button
+            onClick={() => setActiveTab('stock')}
+            className={`flex-1 px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium flex items-center justify-center gap-2 transition-colors ${
+              activeTab === 'stock'
+                ? 'text-purple-600 border-b-2 border-purple-600 bg-purple-50'
+                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+            }`}
+          >
+            <Package className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="hidden xs:inline">อุปกรณ์</span>คงเหลือ
+          </button>
+          <button
+            onClick={() => setActiveTab('history')}
+            className={`flex-1 px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium flex items-center justify-center gap-2 transition-colors ${
+              activeTab === 'history'
+                ? 'text-purple-600 border-b-2 border-purple-600 bg-purple-50'
+                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+            }`}
+          >
+            <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="hidden xs:inline">ประวัติ</span>การเบิก
+          </button>
+          <button
+            onClick={() => setActiveTab('employee')}
+            className={`flex-1 px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium flex items-center justify-center gap-2 transition-colors ${
+              activeTab === 'employee'
+                ? 'text-purple-600 border-b-2 border-purple-600 bg-purple-50'
+                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+            }`}
+          >
+            <Users className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="hidden xs:inline">สรุป</span>พนักงาน
+          </button>
+        </div>
+      </div>
+
       {/* ยอดคงเหลือ */}
+      {activeTab === 'stock' && (
       <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
         <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 bg-purple-50">
           <h2 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center">
@@ -265,8 +306,10 @@ export default function EquipmentSummary({ refresh }: Props) {
           </table>
         </div>
       </div>
+      )}
 
       {/* ประวัติการเบิก */}
+      {activeTab === 'history' && (
       <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
         <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 bg-purple-50">
           <h2 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center">
@@ -351,8 +394,10 @@ export default function EquipmentSummary({ refresh }: Props) {
           )}
         </div>
       </div>
+      )}
 
       {/* สรุปการเบิกของพนักงานแต่ละคน */}
+      {activeTab === 'employee' && (
       <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
         <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 bg-purple-50">
           <h2 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center">
@@ -452,6 +497,7 @@ export default function EquipmentSummary({ refresh }: Props) {
           </table>
         </div>
       </div>
+      )}
     </div>
   )
 }
