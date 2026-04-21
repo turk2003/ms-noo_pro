@@ -39,6 +39,8 @@ ALTER TABLE equipment_withdrawals ENABLE ROW LEVEL SECURITY;
 -- ลบ policies เก่า (ถ้ามี)
 DROP POLICY IF EXISTS "Enable read access for all users" ON equipment_withdrawals;
 DROP POLICY IF EXISTS "Enable insert access for all users" ON equipment_withdrawals;
+DROP POLICY IF EXISTS "Enable update access for all users" ON equipment_withdrawals;
+DROP POLICY IF EXISTS "Enable delete access for all users" ON equipment_withdrawals;
 
 -- สร้าง policies ใหม่
 CREATE POLICY "Enable read access for all users" 
@@ -48,6 +50,15 @@ CREATE POLICY "Enable read access for all users"
 CREATE POLICY "Enable insert access for all users" 
   ON equipment_withdrawals FOR INSERT 
   WITH CHECK (true);
+
+CREATE POLICY "Enable update access for all users"
+  ON equipment_withdrawals FOR UPDATE
+  USING (true)
+  WITH CHECK (true);
+
+CREATE POLICY "Enable delete access for all users"
+  ON equipment_withdrawals FOR DELETE
+  USING (true);
 
 -- สร้างตาราง withdrawal_items (ถ้ายังไม่มี)
 CREATE TABLE IF NOT EXISTS withdrawal_items (
@@ -68,6 +79,8 @@ ALTER TABLE withdrawal_items ENABLE ROW LEVEL SECURITY;
 -- ลบ policies เก่า (ถ้ามี)
 DROP POLICY IF EXISTS "Enable read access for all users" ON withdrawal_items;
 DROP POLICY IF EXISTS "Enable insert access for all users" ON withdrawal_items;
+DROP POLICY IF EXISTS "Enable update access for all users" ON withdrawal_items;
+DROP POLICY IF EXISTS "Enable delete access for all users" ON withdrawal_items;
 
 -- สร้าง policies ใหม่
 CREATE POLICY "Enable read access for all users" 
@@ -77,6 +90,15 @@ CREATE POLICY "Enable read access for all users"
 CREATE POLICY "Enable insert access for all users" 
   ON withdrawal_items FOR INSERT 
   WITH CHECK (true);
+
+CREATE POLICY "Enable update access for all users"
+  ON withdrawal_items FOR UPDATE
+  USING (true)
+  WITH CHECK (true);
+
+CREATE POLICY "Enable delete access for all users"
+  ON withdrawal_items FOR DELETE
+  USING (true);
 
 -- สร้าง/อัพเดต View สำหรับดูรายการเบิกพร้อมรายละเอียด
 DROP VIEW IF EXISTS withdrawal_details_view;
