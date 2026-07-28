@@ -27,6 +27,24 @@ npm run dev
 
 เปิดเบราว์เซอร์ที่ http://localhost:3000
 
+## Supabase Keep-alive
+
+โปรเจกต์มี GitHub Actions workflow ที่ query ตาราง `equipment_items` วันละ 3 ครั้ง
+เพื่อให้ Supabase Free Plan มีกิจกรรมฐานข้อมูลอย่างสม่ำเสมอ
+
+ตั้งค่า repository secrets ที่ GitHub (`Settings > Secrets and variables > Actions`):
+
+```text
+SUPABASE_URL=https://your-project-ref.supabase.co
+SUPABASE_ANON_KEY=your-anon-key
+```
+
+จากนั้นเปิดหน้า `Actions > Supabase keep alive` แล้วกด `Run workflow`
+เพื่อทดสอบครั้งแรก หากสำเร็จ workflow จะทำงานอัตโนมัติเวลาประมาณ
+08:17, 16:17 และ 00:17 น. ตามเวลาไทย
+
+ใช้เฉพาะ anon key สำหรับ workflow นี้ ห้ามใช้ service role key
+
 ## ฟีเจอร์
 
 - ✅ ฟอร์มเบิก-คืนอุปกรณ์
