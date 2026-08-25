@@ -3,9 +3,12 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Package, FileText, BarChart3, Settings } from 'lucide-react'
+import { useOffice } from '@/components/OfficeProvider'
 
 export default function Navbar() {
   const pathname = usePathname()
+  const { office } = useOffice()
+  const basePath = `/${office.slug}`
 
   return (
     <nav className="bg-white shadow-sm border-b border-gray-200">
@@ -14,15 +17,15 @@ export default function Navbar() {
           <div className="flex items-center space-x-2 sm:space-x-3">
             <Package className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
             <h1 className="text-base sm:text-lg font-semibold text-gray-900">
-              ระบบเบิกอุปกรณ์
+              ระบบเบิกอุปกรณ์ {office.code}
             </h1>
           </div>
           
           <div className="flex space-x-1 sm:space-x-2">
             <Link
-              href="/"
+              href={basePath}
               className={`px-2 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition-colors flex items-center gap-1 sm:gap-2 ${
-                pathname === '/'
+                pathname === basePath
                   ? 'bg-purple-600 text-white'
                   : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
               }`}
@@ -31,9 +34,9 @@ export default function Navbar() {
               <span className="hidden sm:inline">เบิก-คืน</span>
             </Link>
             <Link
-              href="/summary"
+              href={`${basePath}/summary`}
               className={`px-2 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition-colors flex items-center gap-1 sm:gap-2 ${
-                pathname === '/summary'
+                pathname === `${basePath}/summary`
                   ? 'bg-purple-600 text-white'
                   : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
               }`}
@@ -42,9 +45,9 @@ export default function Navbar() {
               <span className="hidden sm:inline">สรุปรายการ</span>
             </Link>
             <Link
-              href="/admin"
+              href={`${basePath}/admin`}
               className={`px-2 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition-colors flex items-center gap-1 sm:gap-2 ${
-                pathname === '/admin'
+                pathname === `${basePath}/admin`
                   ? 'bg-purple-600 text-white'
                   : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
               }`}

@@ -1,16 +1,37 @@
 import { createClient } from '@supabase/supabase-js'
+import type { SupabaseClient } from '@supabase/supabase-js'
+import type { OfficeSlug } from '@/lib/offices'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error(
-    'กรุณาตั้งค่า NEXT_PUBLIC_SUPABASE_URL และ NEXT_PUBLIC_SUPABASE_ANON_KEY ในไฟล์ .env.local\n' +
-    'ดูวิธีการตั้งค่าได้ที่ README.md'
-  )
+type SupabaseConfig = {
+  url?: string
+  anonKey?: string
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+const supabaseConfigs: Record<OfficeSlug, SupabaseConfig> = {
+  'pea-kla': {
+    // รองรับชื่อตัวแปรเดิมเพื่อให้ KLA ใช้งานต่อได้โดยไม่สะดุด
+    url: process.env.NEXT_PUBLIC_PEA_KLA_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL,
+    anonKey: process.env.NEXT_PUBLIC_PEA_KLA_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  },
+  'pea-pld': {
+    url: process.env.NEXT_PUBLIC_PEA_PLD_SUPABASE_URL,
+    anonKey: process.env.NEXT_PUBLIC_PEA_PLD_SUPABASE_ANON_KEY
+  }
+}
+
+const clients = new Map<OfficeSlug, SupabaseClient>()
+
+export function getOfficeSupabaseClient(office: OfficeSlug): SupabaseClient | null {
+  const existingClient = clients.get(office)
+  if (existingClient) return existingClient
+
+  const config = supabaseConfigs[office]
+  if (!config.url || !config.anonKey) return null
+
+  const client = createClient(config.url, config.anonKey)
+  clients.set(office, client)
+  return client
+}
 
 // Old types (for backward compatibility)
 export type EquipmentRequest = {

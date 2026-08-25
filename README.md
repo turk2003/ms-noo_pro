@@ -9,23 +9,33 @@
 npm install
 ```
 
-2. ตั้งค่า Supabase:
-   - สร้างโปรเจค Supabase ใหม่ที่ https://supabase.com
-   - คัดลอก URL และ Anon Key มาใส่ในไฟล์ `.env.local`
-   - รันคำสั่ง SQL ในไฟล์ `supabase-schema.sql` ใน Supabase SQL Editor
+2. ตั้งค่า Supabase สองโปรเจกต์:
+   - ใช้โปรเจกต์เดิมสำหรับ `PEA KLA`
+   - สร้างโปรเจกต์ Free เพิ่มสำหรับ `PEA PLD`
+   - รัน `supabase-new-schema.sql` ใน SQL Editor ของทั้งสองโปรเจกต์
+   - ข้อมูลพนักงาน อุปกรณ์ และประวัติการเบิกของแต่ละโปรเจกต์จะแยกจากกัน
 
-3. แก้ไขไฟล์ `.env.local`:
+3. คัดลอก `.env.example` เป็น `.env.local` แล้วใส่ URL และ Anon Key ของแต่ละโปรเจกต์:
 ```
-NEXT_PUBLIC_SUPABASE_URL=your-project-url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+NEXT_PUBLIC_PEA_KLA_SUPABASE_URL=your-kla-project-url
+NEXT_PUBLIC_PEA_KLA_SUPABASE_ANON_KEY=your-kla-anon-key
+
+NEXT_PUBLIC_PEA_PLD_SUPABASE_URL=your-pld-project-url
+NEXT_PUBLIC_PEA_PLD_SUPABASE_ANON_KEY=your-pld-anon-key
 ```
+
+ตัวแปรเดิม `NEXT_PUBLIC_SUPABASE_URL` และ `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+ยังใช้เป็น fallback ของ KLA ได้ เพื่อให้ deployment เดิมทำงานต่อระหว่างการย้ายค่า
 
 4. รันโปรเจค:
 ```bash
 npm run dev
 ```
 
-เปิดเบราว์เซอร์ที่ http://localhost:3000
+เปิดเบราว์เซอร์ที่ http://localhost:3000 แล้วเลือกสำนักงาน หรือเข้าโดยตรง:
+
+- `http://localhost:3000/pea-kla`
+- `http://localhost:3000/pea-pld`
 
 ## Supabase Keep-alive
 
@@ -35,9 +45,14 @@ npm run dev
 ตั้งค่า repository secrets ที่ GitHub (`Settings > Secrets and variables > Actions`):
 
 ```text
-SUPABASE_URL=https://your-project-ref.supabase.co
-SUPABASE_ANON_KEY=your-anon-key
+PEA_KLA_SUPABASE_URL=https://your-kla-project-ref.supabase.co
+PEA_KLA_SUPABASE_ANON_KEY=your-kla-anon-key
+PEA_PLD_SUPABASE_URL=https://your-pld-project-ref.supabase.co
+PEA_PLD_SUPABASE_ANON_KEY=your-pld-anon-key
 ```
+
+ชื่อ secrets เดิม `SUPABASE_URL` และ `SUPABASE_ANON_KEY` ยังเป็น fallback ของ KLA
+แต่ PLD ต้องเพิ่ม secrets ชุดใหม่ก่อน workflow จะสำเร็จ
 
 จากนั้นเปิดหน้า `Actions > Supabase keep alive` แล้วกด `Run workflow`
 เพื่อทดสอบครั้งแรก หากสำเร็จ workflow จะทำงานอัตโนมัติเวลาประมาณ

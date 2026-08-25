@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { supabase, type EquipmentItem, type Employee } from '@/lib/supabase'
+import { useCallback, useState, useEffect } from 'react'
+import { type EquipmentItem, type WithdrawalItemInput } from '@/lib/supabase'
+import { useOffice } from '@/components/OfficeProvider'
 import { User, Building2, Package, ShoppingCart, Plus, Trash2, Loader2, IdCard } from 'lucide-react'
 
 type Props = {
@@ -16,6 +17,7 @@ type SelectedItem = {
 }
 
 export default function EquipmentForm({ onSuccess }: Props) {
+  const { supabase } = useOffice()
   const [formData, setFormData] = useState({
     employee_code: '',
     employee_id: undefined as number | undefined,
@@ -28,12 +30,7 @@ export default function EquipmentForm({ onSuccess }: Props) {
   const [loadingItems, setLoadingItems] = useState(true)
   const [searchingEmployee, setSearchingEmployee] = useState(false)
 
-  // โหลดรายการอุปกรณ์
-  useEffect(() => {
-    loadEquipmentItems()
-  }, [])
-
-  const loadEquipmentItems = async () => {
+  const loadEquipmentItems = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('equipment_items')
@@ -48,7 +45,12 @@ export default function EquipmentForm({ onSuccess }: Props) {
     } finally {
       setLoadingItems(false)
     }
-  }
+  }, [supabase])
+
+  // โหลดรายการอุปกรณ์
+  useEffect(() => {
+    void loadEquipmentItems()
+  }, [loadEquipmentItems])
 
   const searchEmployee = async (employeeCode: string) => {
     if (!employeeCode.trim()) {
@@ -158,7 +160,7 @@ export default function EquipmentForm({ onSuccess }: Props) {
       if (withdrawalError) throw withdrawalError
 
       // 2. เพิ่มรายละเอียดการเบิก
-      const withdrawalItems: any[] = selectedItems.map(item => ({
+      const withdrawalItems: WithdrawalItemInput[] = selectedItems.map(item => ({
         withdrawal_id: withdrawal.id,
         equipment_item_id: item.equipment_item_id,
         quantity: item.quantity
@@ -293,7 +295,7 @@ export default function EquipmentForm({ onSuccess }: Props) {
           <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center">
             <Package className="w-12 h-12 text-gray-400 mx-auto mb-2" />
             <p className="text-gray-500 text-sm">ยังไม่มีรายการอุปกรณ์</p>
-            <p className="text-gray-400 text-xs mt-1">คลิก "เพิ่มรายการ" เพื่อเริ่มต้น</p>
+            <p className="text-gray-400 text-xs mt-1">คลิก &quot;เพิ่มรายการ&quot; เพื่อเริ่มต้น</p>
           </div>
         ) : (
           <div className="space-y-3">

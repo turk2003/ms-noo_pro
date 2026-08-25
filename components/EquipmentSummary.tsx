@@ -1,7 +1,8 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
-import { supabase, type EmployeeWithdrawalSummary, type EquipmentItem } from '@/lib/supabase'
+import { type EmployeeWithdrawalSummary, type EquipmentItem } from '@/lib/supabase'
+import { useOffice } from '@/components/OfficeProvider'
 import {
   Building2,
   Calendar,
@@ -82,6 +83,7 @@ const EMPTY_FORM: WithdrawalFormState = {
 }
 
 export default function EquipmentSummary({ refresh }: Props) {
+  const { office, supabase } = useOffice()
   const [withdrawals, setWithdrawals] = useState<GroupedWithdrawal[]>([])
   const [equipmentItems, setEquipmentItems] = useState<EquipmentItem[]>([])
   const [equipmentStock, setEquipmentStock] = useState<EquipmentStock[]>([])
@@ -97,9 +99,9 @@ export default function EquipmentSummary({ refresh }: Props) {
   const [originalItemIds, setOriginalItemIds] = useState<number[]>([])
 
   useEffect(() => {
-    const authorized = sessionStorage.getItem('admin_authorized')
+    const authorized = sessionStorage.getItem(`admin_authorized:${office.slug}`)
     setIsAdmin(authorized === 'true')
-  }, [])
+  }, [office.slug])
 
   const calculateStock = useCallback(async (equipment: EquipmentItem[]): Promise<EquipmentStock[]> => {
     const withdrawnMap = new Map<number, number>()
@@ -126,7 +128,7 @@ export default function EquipmentSummary({ refresh }: Props) {
         remaining_quantity: item.stock_quantity - withdrawn
       }
     })
-  }, [])
+  }, [supabase])
 
   const groupWithdrawals = useCallback((data: WithdrawalDetail[]): GroupedWithdrawal[] => {
     const map = new Map<number, GroupedWithdrawal>()
@@ -190,7 +192,7 @@ export default function EquipmentSummary({ refresh }: Props) {
     } finally {
       setLoading(false)
     }
-  }, [calculateStock, groupWithdrawals])
+  }, [calculateStock, groupWithdrawals, supabase])
 
   useEffect(() => {
     void fetchData()

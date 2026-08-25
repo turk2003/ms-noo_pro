@@ -1,20 +1,17 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { useCallback, useEffect, useState } from 'react'
+import { useOffice } from '@/components/OfficeProvider'
 
 export default function TestConnection() {
+  const { supabase } = useOffice()
   const [status, setStatus] = useState<{
     employees: number
     equipmentItems: number
     error?: string
   } | null>(null)
 
-  useEffect(() => {
-    testConnection()
-  }, [])
-
-  const testConnection = async () => {
+  const testConnection = useCallback(async () => {
     try {
       // นับจำนวนพนักงาน
       const { count: empCount, error: empError } = await supabase
@@ -46,7 +43,13 @@ export default function TestConnection() {
         error: (error as Error).message 
       })
     }
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    // การทดสอบนี้ตั้งใจเริ่ม query หลัง component mount
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void testConnection()
+  }, [testConnection])
 
   if (!status) {
     return (

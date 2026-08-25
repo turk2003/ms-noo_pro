@@ -1,10 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { supabase, type Employee } from '@/lib/supabase'
+import { type Employee } from '@/lib/supabase'
+import { useOffice } from '@/components/OfficeProvider'
 import { Plus, Edit2, Trash2, Loader2, Save, X } from 'lucide-react'
 
 export default function EmployeeManagement() {
+  const { supabase } = useOffice()
   const [employees, setEmployees] = useState<Employee[]>([])
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState<number | null>(null)

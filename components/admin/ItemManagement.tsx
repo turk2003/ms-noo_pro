@@ -1,10 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { supabase, type EquipmentItem } from '@/lib/supabase'
+import { type EquipmentItem } from '@/lib/supabase'
+import { useOffice } from '@/components/OfficeProvider'
 import { Plus, Edit2, Trash2, Loader2, Save, X } from 'lucide-react'
 
 export default function ItemManagement() {
+  const { supabase } = useOffice()
   const [items, setItems] = useState<EquipmentItem[]>([])
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState<number | null>(null)

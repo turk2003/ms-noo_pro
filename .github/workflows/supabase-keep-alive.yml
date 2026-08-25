@@ -17,26 +17,37 @@ jobs:
     steps:
       - name: Query Supabase
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          PEA_KLA_SUPABASE_URL: ${{ secrets.PEA_KLA_SUPABASE_URL || secrets.SUPABASE_URL }}
+          PEA_KLA_SUPABASE_ANON_KEY: ${{ secrets.PEA_KLA_SUPABASE_ANON_KEY || secrets.SUPABASE_ANON_KEY }}
+          PEA_PLD_SUPABASE_URL: ${{ secrets.PEA_PLD_SUPABASE_URL }}
+          PEA_PLD_SUPABASE_ANON_KEY: ${{ secrets.PEA_PLD_SUPABASE_ANON_KEY }}
         run: |
-          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
-            echo "::error::Missing SUPABASE_URL or SUPABASE_ANON_KEY repository secret"
-            exit 1
-          fi
+          query_project() {
+            office="$1"
+            url="$2"
+            anon_key="$3"
 
-          curl \
-            --fail-with-body \
-            --silent \
-            --show-error \
-            --retry 3 \
-            --retry-all-errors \
-            --connect-timeout 10 \
-            --max-time 30 \
-            --header "apikey: $SUPABASE_ANON_KEY" \
-            --header "Authorization: Bearer $SUPABASE_ANON_KEY" \
-            --header "Accept: application/json" \
-            "$SUPABASE_URL/rest/v1/equipment_items?select=id&limit=1" \
-            > /dev/null
+            if [ -z "$url" ] || [ -z "$anon_key" ]; then
+              echo "::error::Missing Supabase repository secrets for $office"
+              return 1
+            fi
 
-          echo "Supabase database query completed successfully"
+            curl \
+              --fail-with-body \
+              --silent \
+              --show-error \
+              --retry 3 \
+              --retry-all-errors \
+              --connect-timeout 10 \
+              --max-time 30 \
+              --header "apikey: $anon_key" \
+              --header "Authorization: Bearer $anon_key" \
+              --header "Accept: application/json" \
+              "$url/rest/v1/equipment_items?select=id&limit=1" \
+              > /dev/null
+
+            echo "$office database query completed successfully"
+          }
+
+          query_project "PEA KLA" "$PEA_KLA_SUPABASE_URL" "$PEA_KLA_SUPABASE_ANON_KEY"
+          query_project "PEA PLD" "$PEA_PLD_SUPABASE_URL" "$PEA_PLD_SUPABASE_ANON_KEY"
