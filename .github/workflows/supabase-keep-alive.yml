@@ -21,6 +21,14 @@ jobs:
           PEA_KLA_SUPABASE_ANON_KEY: ${{ secrets.PEA_KLA_SUPABASE_ANON_KEY || secrets.SUPABASE_ANON_KEY }}
           PEA_PLD_SUPABASE_URL: ${{ secrets.PEA_PLD_SUPABASE_URL }}
           PEA_PLD_SUPABASE_ANON_KEY: ${{ secrets.PEA_PLD_SUPABASE_ANON_KEY }}
+          PEA_BAN_CHANG_SUPABASE_URL: ${{ secrets.PEA_BAN_CHANG_SUPABASE_URL }}
+          PEA_BAN_CHANG_SUPABASE_ANON_KEY: ${{ secrets.PEA_BAN_CHANG_SUPABASE_ANON_KEY }}
+          PEA_RAYONG_SUPABASE_URL: ${{ secrets.PEA_RAYONG_SUPABASE_URL }}
+          PEA_RAYONG_SUPABASE_ANON_KEY: ${{ secrets.PEA_RAYONG_SUPABASE_ANON_KEY }}
+          PEA_BAN_KHAI_SUPABASE_URL: ${{ secrets.PEA_BAN_KHAI_SUPABASE_URL }}
+          PEA_BAN_KHAI_SUPABASE_ANON_KEY: ${{ secrets.PEA_BAN_KHAI_SUPABASE_ANON_KEY }}
+          PEA_MAP_TA_PHUT_SUPABASE_URL: ${{ secrets.PEA_MAP_TA_PHUT_SUPABASE_URL }}
+          PEA_MAP_TA_PHUT_SUPABASE_ANON_KEY: ${{ secrets.PEA_MAP_TA_PHUT_SUPABASE_ANON_KEY }}
         run: |
           query_project() {
             office="$1"
@@ -51,3 +59,7 @@ jobs:
 
           query_project "PEA KLA" "$PEA_KLA_SUPABASE_URL" "$PEA_KLA_SUPABASE_ANON_KEY"
           query_project "PEA PLD" "$PEA_PLD_SUPABASE_URL" "$PEA_PLD_SUPABASE_ANON_KEY"
+          query_project "PEA บ้านฉาง" "$PEA_BAN_CHANG_SUPABASE_URL" "$PEA_BAN_CHANG_SUPABASE_ANON_KEY"
+          query_project "PEA ระยอง" "$PEA_RAYONG_SUPABASE_URL" "$PEA_RAYONG_SUPABASE_ANON_KEY"
+          query_project "PEA บ้านค่าย" "$PEA_BAN_KHAI_SUPABASE_URL" "$PEA_BAN_KHAI_SUPABASE_ANON_KEY"
+          query_project "PEA มาบตาพุด" "$PEA_MAP_TA_PHUT_SUPABASE_URL" "$PEA_MAP_TA_PHUT_SUPABASE_ANON_KEY"

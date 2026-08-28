@@ -16,6 +16,22 @@ const supabaseConfigs: Record<OfficeSlug, SupabaseConfig> = {
   'pea-pld': {
     url: process.env.NEXT_PUBLIC_PEA_PLD_SUPABASE_URL,
     anonKey: process.env.NEXT_PUBLIC_PEA_PLD_SUPABASE_ANON_KEY
+  },
+  'pea-ban-chang': {
+    url: process.env.NEXT_PUBLIC_PEA_BAN_CHANG_SUPABASE_URL,
+    anonKey: process.env.NEXT_PUBLIC_PEA_BAN_CHANG_SUPABASE_ANON_KEY
+  },
+  'pea-rayong': {
+    url: process.env.NEXT_PUBLIC_PEA_RAYONG_SUPABASE_URL,
+    anonKey: process.env.NEXT_PUBLIC_PEA_RAYONG_SUPABASE_ANON_KEY
+  },
+  'pea-ban-khai': {
+    url: process.env.NEXT_PUBLIC_PEA_BAN_KHAI_SUPABASE_URL,
+    anonKey: process.env.NEXT_PUBLIC_PEA_BAN_KHAI_SUPABASE_ANON_KEY
+  },
+  'pea-map-ta-phut': {
+    url: process.env.NEXT_PUBLIC_PEA_MAP_TA_PHUT_SUPABASE_URL,
+    anonKey: process.env.NEXT_PUBLIC_PEA_MAP_TA_PHUT_SUPABASE_ANON_KEY
   }
 }
 

@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: Omit<Props, 'children'>): Pro
   if (!isOfficeSlug(office)) return {}
 
   return {
-    title: `ระบบเบิกอุปกรณ์ PEA ${OFFICES[office].code}`,
+    title: `ระบบเบิกอุปกรณ์ ${OFFICES[office].label}`,
     description: OFFICES[office].name
   }
 }

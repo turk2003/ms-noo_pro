@@ -21,15 +21,21 @@ export default function OfficeProvider({ office, children }: Props) {
   const supabase = useMemo(() => getOfficeSupabaseClient(office.slug), [office.slug])
 
   if (!supabase) {
-    const prefix = office.code === 'KLA' ? 'PEA_KLA' : 'PEA_PLD'
-
     return (
       <main className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
-        <div className="max-w-xl rounded-xl border border-amber-200 bg-white p-6 shadow-sm">
-          <h1 className="text-xl font-semibold text-gray-900">ยังไม่ได้ตั้งค่าฐานข้อมูล {office.code}</h1>
-          <p className="mt-2 text-sm text-gray-600">
-            กรุณาเพิ่มตัวแปร <code>NEXT_PUBLIC_{prefix}_SUPABASE_URL</code> และ{' '}
-            <code>NEXT_PUBLIC_{prefix}_SUPABASE_ANON_KEY</code> แล้วเริ่มแอปใหม่
+        <div className="w-full max-w-xl overflow-hidden rounded-xl border border-amber-200 bg-white p-6 shadow-sm">
+          <h1 className="text-xl font-semibold text-gray-900">ยังไม่ได้ตั้งค่าฐานข้อมูล {office.label}</h1>
+          <p className="mt-2 text-sm leading-6 text-gray-600">กรุณาเพิ่มตัวแปรต่อไปนี้:</p>
+          <div className="mt-3 space-y-2">
+            <code className="block break-all rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-950">
+              NEXT_PUBLIC_{office.envPrefix}_SUPABASE_URL
+            </code>
+            <code className="block break-all rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-950">
+              NEXT_PUBLIC_{office.envPrefix}_SUPABASE_ANON_KEY
+            </code>
+          </div>
+          <p className="mt-3 text-sm leading-6 text-gray-600">
+            บันทึกค่าแล้วเริ่มแอปใหม่อีกครั้ง
           </p>
         </div>
       </main>

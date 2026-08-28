@@ -9,10 +9,14 @@
 npm install
 ```
 
-2. ตั้งค่า Supabase สองโปรเจกต์:
-   - ใช้โปรเจกต์เดิมสำหรับ `PEA KLA`
-   - สร้างโปรเจกต์ Free เพิ่มสำหรับ `PEA PLD`
-   - รัน `supabase-new-schema.sql` ใน SQL Editor ของทั้งสองโปรเจกต์
+2. ตั้งค่า Supabase แยก 6 โปรเจกต์:
+   - `PEA KLA`
+   - `PEA PLD`
+   - `PEA บ้านฉาง`
+   - `PEA ระยอง`
+   - `PEA บ้านค่าย`
+   - `PEA มาบตาพุด`
+   - รัน `supabase-new-schema.sql` ใน SQL Editor ของทุกโปรเจกต์
    - ข้อมูลพนักงาน อุปกรณ์ และประวัติการเบิกของแต่ละโปรเจกต์จะแยกจากกัน
 
 3. คัดลอก `.env.example` เป็น `.env.local` แล้วใส่ URL และ Anon Key ของแต่ละโปรเจกต์:
@@ -22,6 +26,18 @@ NEXT_PUBLIC_PEA_KLA_SUPABASE_ANON_KEY=your-kla-anon-key
 
 NEXT_PUBLIC_PEA_PLD_SUPABASE_URL=your-pld-project-url
 NEXT_PUBLIC_PEA_PLD_SUPABASE_ANON_KEY=your-pld-anon-key
+
+NEXT_PUBLIC_PEA_BAN_CHANG_SUPABASE_URL=your-ban-chang-project-url
+NEXT_PUBLIC_PEA_BAN_CHANG_SUPABASE_ANON_KEY=your-ban-chang-anon-key
+
+NEXT_PUBLIC_PEA_RAYONG_SUPABASE_URL=your-rayong-project-url
+NEXT_PUBLIC_PEA_RAYONG_SUPABASE_ANON_KEY=your-rayong-anon-key
+
+NEXT_PUBLIC_PEA_BAN_KHAI_SUPABASE_URL=your-ban-khai-project-url
+NEXT_PUBLIC_PEA_BAN_KHAI_SUPABASE_ANON_KEY=your-ban-khai-anon-key
+
+NEXT_PUBLIC_PEA_MAP_TA_PHUT_SUPABASE_URL=your-map-ta-phut-project-url
+NEXT_PUBLIC_PEA_MAP_TA_PHUT_SUPABASE_ANON_KEY=your-map-ta-phut-anon-key
 ```
 
 ตัวแปรเดิม `NEXT_PUBLIC_SUPABASE_URL` และ `NEXT_PUBLIC_SUPABASE_ANON_KEY`
@@ -36,6 +52,10 @@ npm run dev
 
 - `http://localhost:3000/pea-kla`
 - `http://localhost:3000/pea-pld`
+- `http://localhost:3000/pea-ban-chang`
+- `http://localhost:3000/pea-rayong`
+- `http://localhost:3000/pea-ban-khai`
+- `http://localhost:3000/pea-map-ta-phut`
 
 ## Supabase Keep-alive
 
@@ -49,10 +69,18 @@ PEA_KLA_SUPABASE_URL=https://your-kla-project-ref.supabase.co
 PEA_KLA_SUPABASE_ANON_KEY=your-kla-anon-key
 PEA_PLD_SUPABASE_URL=https://your-pld-project-ref.supabase.co
 PEA_PLD_SUPABASE_ANON_KEY=your-pld-anon-key
+PEA_BAN_CHANG_SUPABASE_URL=https://your-ban-chang-project-ref.supabase.co
+PEA_BAN_CHANG_SUPABASE_ANON_KEY=your-ban-chang-anon-key
+PEA_RAYONG_SUPABASE_URL=https://your-rayong-project-ref.supabase.co
+PEA_RAYONG_SUPABASE_ANON_KEY=your-rayong-anon-key
+PEA_BAN_KHAI_SUPABASE_URL=https://your-ban-khai-project-ref.supabase.co
+PEA_BAN_KHAI_SUPABASE_ANON_KEY=your-ban-khai-anon-key
+PEA_MAP_TA_PHUT_SUPABASE_URL=https://your-map-ta-phut-project-ref.supabase.co
+PEA_MAP_TA_PHUT_SUPABASE_ANON_KEY=your-map-ta-phut-anon-key
 ```
 
 ชื่อ secrets เดิม `SUPABASE_URL` และ `SUPABASE_ANON_KEY` ยังเป็น fallback ของ KLA
-แต่ PLD ต้องเพิ่ม secrets ชุดใหม่ก่อน workflow จะสำเร็จ
+ส่วนอีก 5 การไฟฟ้าต้องเพิ่ม secrets ของตนเองก่อน workflow จะสำเร็จ
 
 จากนั้นเปิดหน้า `Actions > Supabase keep alive` แล้วกด `Run workflow`
 เพื่อทดสอบครั้งแรก หากสำเร็จ workflow จะทำงานอัตโนมัติเวลาประมาณ
